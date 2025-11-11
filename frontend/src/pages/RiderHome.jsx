@@ -14,7 +14,7 @@ export default function RiderHome(){
   return (
     <div style={containerStyle}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-        <h2 style={titleStyle}>Carpool Member Home</h2>
+        <h2 style={titleStyle}>Vehicle-pool Member Home</h2>
         <button 
           onClick={handleLogout}
           style={{ padding: '8px 16px', backgroundColor: '#dc3545', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
@@ -34,10 +34,10 @@ export default function RiderHome(){
             <p>See requests from others and Accept to join.</p>
         </Link>
         
-        <div style={{...cardStyle, backgroundColor: '#f8d7da', cursor: 'not-allowed', opacity: 0.6}}>
+        <Link to='/rider/profile' style={{...cardStyle, backgroundColor: '#f8d7da'}}>
             <h3>My Profile & Wallet</h3>
-            <p>View history and payment details (Coming soon).</p>
-        </div>
+            <p>View and edit your profile information.</p>
+        </Link>
         
         <Link to='/rider/my-rides' style={{...cardStyle, backgroundColor: '#cce5ff'}}>
             <h3>My Ride History</h3>
