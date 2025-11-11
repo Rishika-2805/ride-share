@@ -10,6 +10,7 @@ import MyProfile from './pages/MyProfile'
 import Chatroom from './pages/Chatroom'
 import ProtectedRoute from './components/ProtectedRoute'
 import { setAuthToken } from './api'
+import { socket } from './socket'
 
 function App(){
   // Restore token from localStorage on app load
@@ -17,7 +18,32 @@ function App(){
     const token = localStorage.getItem('token');
     if (token) {
       setAuthToken(token);
+      // Connect socket when user is authenticated
+      socket.connect();
+      
+      // Listen for new ride notifications globally
+      socket.on('new_shared_ride', (data) => {
+        if (data.notification && 'Notification' in window && Notification.permission === 'granted') {
+          new Notification(data.notification.title, {
+            body: data.notification.body,
+            icon: '/favicon.ico'
+          });
+        } else if (data.notification && 'Notification' in window && Notification.permission === 'default') {
+          Notification.requestPermission().then(permission => {
+            if (permission === 'granted') {
+              new Notification(data.notification.title, {
+                body: data.notification.body,
+                icon: '/favicon.ico'
+              });
+            }
+          });
+        }
+      });
     }
+    
+    return () => {
+      socket.off('new_shared_ride');
+    };
   }, []);
 
   return (
